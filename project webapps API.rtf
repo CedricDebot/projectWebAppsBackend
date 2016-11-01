@@ -1,0 +1,99 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+
+\f0\b\fs32 \cf0 \ul \ulc0 project webapps API
+\b0\fs24 \ulnone \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+GET /djs\
+	- deze bewerking geeft een overzicht weer van alle dj\'92s\
+	- geen input\
+	- output is een array van objecten waarbij elk object informatie bevat over een enkele gebruiker	- verwachte statuscode : 200 OK\
+\
+POST /djs\
+	- deze bewerking dient om een nieuwe dj toe te voegen\
+	- de input is een object dat de nieuwe gegevens van de dj bevat\
+	- er is geen output\
+	- verwachte statuscode: 201 Created\
+\
+GET /djs/djname/\{djname\}\
+	- deze bewerking vraagt de gegevens op van een dj met een bepaalde djname\
+	- er is geen input vereist\
+	- de output is een object dat de gegevens van de dj \
+	- verwachte statuscode: 200 OK\
+\
+PUT /djs/djname/\{djname\}\
+	- deze bewerking dient om de gegevens van een dj aan te passen\
+	- de input is een object dat de nieuwe gegevens van de dj bevat\
+	- geen output\
+	- verwachte statuscode: 204 No Content\
+\
+DELETE /djs/djname/\{djname\}\
+	- deze bewerking dient om een dj te verwijderen\
+	- geen input	\
+	- geen output\
+	- verwachte statuscode: 204 No Content\
+\
+GET /djs/genre/\{genre\}\
+	- deze bewerking geeft een overzicht van alle dj van een bepaald genre\
+	- geen input\
+	- de output is een array van objecten waarbij elk object de informatie bevat van een enkele dj \
+	- verwachte statuscode: 200 OK\
+\
+GET /djs/region/\{region\}\
+	- deze bewerking geeft een overzicht van alle dj van een bepaalde regio\
+	- geen input\
+	- de output is een array van objecten waarbij elk object de informatie bevat van een enkele dj \
+	- verwachte statuscode: 200 OK\
+\
+GET /djs/price/\{price\}\
+	- deze bewerking geeft een overzicht van alle dj van een bepaalde prijscategorie\
+	- geen input\
+	- de output is een array van objecten waarbij elk object de informatie bevat van een enkele dj \
+	- verwachte statuscode: 200 OK\
+\
+GET /djs/genre/\{genre\}/region/\{region\}/price/\{price\}\
+	- deze bewerking geeft een overzicht van alle dj\'92s van een bepaald genre, uit een bepaalde 		regio en binnen een bepaalde prijscategorie\
+	- geen input\
+	- de output is een array van objecten waarbij elk object de informatie bevat van een enkele dj\
+	- verwachte statuscode: 200 OK \
+\
+GET /djs/genre/\{genre\}/region/\{region\}\
+	- deze bewerking geeft een overzicht weer van alle dj\'92s van een bepaald genre, uit een 		bepaalde regio\
+	- geen input \
+	- de output is een array van objecten waarbij elk object de informatie bevat van een enkele dj\
+	- verwachte statuscode: 200 OK\
+\
+Get /djs/genre/\{genre\}/price/\{price\}\
+	- deze bewerking geeft een overzicht weer van alle dj\'92s van een bepaald genre, binnen een 		bepaalde prijscategorie\
+	- geen input \
+	- de output is een array van objecten waarbij elk object de informatie bevat van een enkele dj \
+	- verwachte statuscode: 200 OK\
+\
+GET /djs/region/\{region\}/price/\{price\}\
+	- deze bewerking geeft een overzicht weer van alle dj\'92s uit een bepaalde regio, binnen een 		bepaalde prijscategorie\
+	- geen input \
+	- de output is een array van objecten waarbij elk object de informatie bevat van een enkele dj \
+	- verwachte statuscode: 200 OK\
+\
+GET /djs/djname/\{djname\}/picture\
+	- deze bewerking vraagt de profielfoto van een dj op\
+	- geen input\
+	- afbeelding in het formaat PNG\
+	- verwachte statuscode: 200 OK\
+\
+PUT /djs/djname/\{djname\}/picture\
+	- deze bewerking dient om de profielfoto van een dj te wijzigen \
+	- input is een afbeelding in het formaat PNG\
+	- geen output\
+	- verwachte statuscode: 204 No Content\
+\
+DELETE /djs/djname/\{djname\}/picture\
+	- deze bewerking dient om de profielfoto van een dj te verwijderen\
+	- geen input\
+	- geen output\
+	- verwachte statuscode: 204 No Content\
+}
