@@ -43,4 +43,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/findYourDJ');
+require('./models/Djs');
+require('./models/Comments');
+
 module.exports = app;
