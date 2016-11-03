@@ -5,6 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/findYourDJ');
+require('./models/Djs');
+require('./models/Comments');
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -43,10 +48,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost/findYourDJ');
-require('./models/Djs');
-require('./models/Comments');
 
 module.exports = app;
