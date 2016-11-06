@@ -1,8 +1,80 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+   margin: 0;
+   padding: 0;
+   border: 0;
+   font-size: 100%;
+   vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+   display: block;
+}
 body {
+   line-height: 1.2;
+}
+ol {
+   padding-left: 1.4em;
+   list-style: decimal;
+}
+ul {
+   padding-left: 1.4em;
+   list-style: square;
+}
+table {
+   border-collapse: collapse;
+   border-spacing: 0;
+}
+
+/* end reset browser styles */
+
+/*body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+*/
+
+.main_header {
+  background-color: black;
+  height: 150px;
+}
+
+.navbar {
+  text-align: right;
+  margin-right: 5%;
+  padding-top: 100px;
+}
+
+.navbar ul {
+  list-style-type: none;
+}
+
+.navbar ul li {
+  display: inline-block;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: green;
+  padding: 10px;
+  display: block;
+  font-size: 20px;
+}
+
+.main_footer {
+  background-color: black;
+  height: 100px;
+}
+
+.footer_author {
+  float: right;
+}
+
+.footer_author p {
+  color: green;
 }
