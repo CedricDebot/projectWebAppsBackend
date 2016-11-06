@@ -12,7 +12,7 @@ router.param('dj', function(req, res, next, id){
 	var query = Dj.findById(id);
 
 	query.exec(function(err, dj){
-		if(err) { 
+		if(err) {
 			return next(err);
 	       	}
 		if(!dj) {
@@ -40,6 +40,21 @@ router.param('comment', function(req, res, next, id){
 	});
 });
 
+router.param('region', function(req, req, next, region) {
+	var query = Dj.findAll(region);
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+		}
+		if(!dj) {
+			return next(new Error('Can\'t find dj'));
+		}
+
+		req.dj = dj;
+		return next();
+	});
+});
 router.get('/djs', function(req, res, next){
 	Dj.find(function(err, djs){
 		if(err) {
@@ -55,7 +70,7 @@ router.post('/djs', function(req, res, next){
 
 	dj.save(function(err, dj) {
 		if(err) {
-		       	return next(err); 
+		       	return next(err);
 		}
 
 		res.json(dj);
@@ -69,9 +84,12 @@ router.get('/djs/:dj', function(req, res, next) {
 		}
 		res.json(dj);
 	});
-	
+
 });
 
+router.get('/djs/region/:region', function(req, res){
+	res.json(req.dj);
+});
 router.put('/djs/:dj/upvote', function(req, res, next) {
 	req.dj.upvote(function (err, dj ) {
 		if (err) {
@@ -107,7 +125,7 @@ router.put('/djs/:dj/comments/:comment/upvote', function(req, res, next) {
 		if (err) {
 			return next(err);
 		}
-		
+
 		res.json(comment);
 	});
 });
