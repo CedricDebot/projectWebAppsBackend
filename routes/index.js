@@ -14,10 +14,10 @@ router.param('dj', function(req, res, next, id){
 	query.exec(function(err, dj){
 		if(err) {
 			return next(err);
-	       	}
+					}
 		if(!dj) {
-		   	return next(new Error('Can\'t find dj'));
-	       	}
+				return next(new Error('Can\'t find dj'));
+		}
 
 		req.dj = dj;
 		return next();
@@ -40,21 +40,135 @@ router.param('comment', function(req, res, next, id){
 	});
 });
 
-router.param('region', function(req, req, next, region) {
-	var query = Dj.findAll(region);
+router.param('region', function(req, res, next, region) {
+	var query = Dj.find({region: region});
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+					}
+		if(!dj) {
+				return next(new Error('Can\'t find dj'));
+					}
+
+		req.dj = dj;
+		return next();
+	});
+});
+
+router.param('djName', function(req, res, next, djname){
+	var query = Dj.find({djName: djname });
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+					}
+		if(!dj) {
+				return next(new Error('Can\'t find dj'));
+					}
+
+		req.dj = dj;
+		return next();
+	});
+});
+
+router.param('genre', function(req, res, next, genre){
+	var query = Dj.find({genres: genre});
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+					}
+		if(!dj) {
+				return next(new Error('Can\'t find dj'));
+					}
+
+		req.dj = dj;
+		return next();
+	});
+});
+
+router.param('price', function(req, res, next, price){
+	var query = Dj.find({price: {$lte:price}});
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+					}
+		if(!dj) {
+				return next(new Error('Can\'t find dj'));
+					}
+
+		req.dj = dj;
+		return next();
+	});
+});
+
+/*router.param('region&price', function(req, res, next, region, price){
+	var query = Dj.find({$and: [{region : region}, {price: {$lte: price}}]});
 
 	query.exec(function(err, dj){
 		if(err) {
 			return next(err);
 		}
 		if(!dj) {
-			return next(new Error('Can\'t find dj'));
+			return next(new Error('Can\'t find any dj'));
 		}
 
 		req.dj = dj;
 		return next();
 	});
 });
+
+router.param('region&genre', function(req, res, next, region, genre) {
+	var query = Dj.find({$and: [{region : region}, {genres : genre}]});
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+		}
+		if(!dj) {
+			return next(new Error('Can\'t find any dj'));
+		}
+
+		req.dj = dj;
+		return next();
+	});
+});
+
+router.param('genre&price', function(req, res, next, genre, price){
+	var query = Dj.find({$and: [{genres: genre}, {price: {$lte: price}}]});
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+		}
+		if(!dj) {
+			return next(new Error('Can\'t find any dj'));
+		}
+
+		req.dj = dj;
+		return next();
+	});
+});
+
+router.param('region&genre&price', function(req, res, next, region, genre, price){
+	var query = Dj.find({$and: [{region : region},{genres: genre},{price: {$lte: price}}]});
+
+	query.exec(function(err, dj){
+		if(err) {
+			return next(err);
+		}
+		if(!dj) {
+			return next(new Error('Can\'t find any dj'));
+		}
+
+		req.dj = dj;
+		return next();
+	});
+});
+*/
+
 router.get('/djs', function(req, res, next){
 	Dj.find(function(err, djs){
 		if(err) {
@@ -84,12 +198,40 @@ router.get('/djs/:dj', function(req, res, next) {
 		}
 		res.json(dj);
 	});
+});
 
+router.get('/djs/djName/:djName', function(req, res){
+	res.json(req.dj);
 });
 
 router.get('/djs/region/:region', function(req, res){
 	res.json(req.dj);
 });
+
+router.get('/djs/genres/:genre', function(req, res) {
+	res.json(req.dj);
+});
+
+router.get('/djs/price/:price', function(req, res) {
+	res.json(req.dj);
+});
+
+router.get('/djs/region/:region&/price/:price', function(req, res){
+	res.json(req.dj);
+});
+
+router.get('/djs/region/:region&/genres/:genre', function(req, res){
+	res.json(req.dj);
+});
+
+router.get('/djs/genre/:genre&/price/:price', function(req, res){
+	res.json(req.dj);
+})
+
+router.get('/djs/region/:region&/genre/:genre&/price/:price', function(req, res){
+	res.json(req.dj);
+});
+
 router.put('/djs/:dj/upvote', function(req, res, next) {
 	req.dj.upvote(function (err, dj ) {
 		if (err) {
@@ -128,6 +270,16 @@ router.put('/djs/:dj/comments/:comment/upvote', function(req, res, next) {
 
 		res.json(comment);
 	});
+});
+
+router.delete('/djs/:dj', function(req, res, next){
+	req.dj.remove(function(err, dj){
+		if (err) {
+			return next(err);
+		}
+	});
+
+	res.json("dj deleted succesfully");
 });
 
 /* GET home page. */
