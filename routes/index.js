@@ -40,22 +40,6 @@ router.param('comment', function(req, res, next, id){
 	});
 });
 
-router.param('region', function(req, res, next, region) {
-	var query = Dj.find({region: region});
-
-	query.exec(function(err, dj){
-		if(err) {
-			return next(err);
-					}
-		if(!dj) {
-				return next(new Error('Can\'t find dj'));
-					}
-
-		req.dj = dj;
-		return next();
-	});
-});
-
 router.param('djName', function(req, res, next, djname){
 	var query = Dj.find({djName: djname });
 
@@ -69,113 +53,6 @@ router.param('djName', function(req, res, next, djname){
 
 		req.dj = dj;
 		return next();
-	});
-});
-
-router.param('genre', function(req, res, next, genre){
-	var query = Dj.find({genres: genre});
-
-	query.exec(function(err, dj){
-		if(err) {
-			return next(err);
-					}
-		if(!dj) {
-				return next(new Error('Can\'t find dj'));
-					}
-
-		req.dj = dj;
-		return next();
-	});
-});
-
-router.param('price', function(req, res, next, price){
-	var query = Dj.find({price: {$lte:price}});
-
-	query.exec(function(err, dj){
-		if(err) {
-			return next(err);
-					}
-		if(!dj) {
-				return next(new Error('Can\'t find dj'));
-					}
-
-		req.dj = dj;
-		return next();
-	});
-});
-
-/*router.param('region&price', function(req, res, next, region, price){
-	var query = Dj.find({$and: [{region : region}, {price: {$lte: price}}]});
-
-	query.exec(function(err, dj){
-		if(err) {
-			return next(err);
-		}
-		if(!dj) {
-			return next(new Error('Can\'t find any dj'));
-		}
-
-		req.dj = dj;
-		return next();
-	});
-});
-
-router.param('region&genre', function(req, res, next, region, genre) {
-	var query = Dj.find({$and: [{region : region}, {genres : genre}]});
-
-	query.exec(function(err, dj){
-		if(err) {
-			return next(err);
-		}
-		if(!dj) {
-			return next(new Error('Can\'t find any dj'));
-		}
-
-		req.dj = dj;
-		return next();
-	});
-});
-
-router.param('genre&price', function(req, res, next, genre, price){
-	var query = Dj.find({$and: [{genres: genre}, {price: {$lte: price}}]});
-
-	query.exec(function(err, dj){
-		if(err) {
-			return next(err);
-		}
-		if(!dj) {
-			return next(new Error('Can\'t find any dj'));
-		}
-
-		req.dj = dj;
-		return next();
-	});
-});
-
-router.param('region&genre&price', function(req, res, next, region, genre, price){
-	var query = Dj.find({$and: [{region : region},{genres: genre},{price: {$lte: price}}]});
-
-	query.exec(function(err, dj){
-		if(err) {
-			return next(err);
-		}
-		if(!dj) {
-			return next(new Error('Can\'t find any dj'));
-		}
-
-		req.dj = dj;
-		return next();
-	});
-});
-*/
-
-router.get('/djs', function(req, res, next){
-	Dj.find(function(err, djs){
-		if(err) {
-			return next(err);
-		}
-
-		res.json(djs);
 	});
 });
 
@@ -204,32 +81,48 @@ router.get('/djs/djName/:djName', function(req, res){
 	res.json(req.dj);
 });
 
-router.get('/djs/region/:region', function(req, res){
-	res.json(req.dj);
-});
+//GET /djs?region=Antwerpen&genre=house&price=160
+router.get('/djs', function(req, res, next){
+	var mongoQuery;
 
-router.get('/djs/genres/:genre', function(req, res) {
-	res.json(req.dj);
-});
+	switch (true) {
+		case !req.query.region && !req.query.genre && !req.query.price:
+			mongoQuery = Dj.find();
+			break;
+		case !req.query.region && !req.query.genre:
+			mongoQuery = Dj.find({ price: {$lte: req.query.price }});
+			break;
+		case !req.query.region && !req.query.price:
+			mongoQuery = Dj.find({ genres: req.query.genre });
+			break;
+		case !req.query.region:
+			mongoQuery = Dj.find({$and: [{ genres: req.query.genre }, { price: { $lte: req.query.price }}]});
+			break;
+		case !req.query.genre && !req.query.price:
+			mongoQuery = Dj.find({ region: req.query.region });
+			break;
+		case !req.query.genre:
+			mongoQuery = Dj.find({$and: [{ region: req.query.region }, { price: { $lte: req.query.price }}]});
+			break;
+		case !req.query.price:
+			mongoQuery = Dj.find({$and: [{ region: req.query.region }, { genres: req.query.genre}]});
+			break;
+		default:
+			mongoQuery = Dj.find({$and: [{ region: req.query.region }, { genres: req.query.genre }, { price: { $lte: req.query.price }}]});
+			break;
+	}
 
-router.get('/djs/price/:price', function(req, res) {
-	res.json(req.dj);
-});
+	mongoQuery.exec(function(err, dj){
+		if(err) {
+			return next(err);
+		}
+		if (!dj) {
+			return next(new Error('Can\'t find any dj'));
+		}
 
-router.get('/djs/region/:region&/price/:price', function(req, res){
-	res.json(req.dj);
-});
-
-router.get('/djs/region/:region&/genres/:genre', function(req, res){
-	res.json(req.dj);
-});
-
-router.get('/djs/genre/:genre&/price/:price', function(req, res){
-	res.json(req.dj);
-})
-
-router.get('/djs/region/:region&/genre/:genre&/price/:price', function(req, res){
-	res.json(req.dj);
+		res.json(dj);
+	//	return next();
+	});
 });
 
 router.put('/djs/:dj/upvote', function(req, res, next) {
