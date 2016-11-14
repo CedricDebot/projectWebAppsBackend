@@ -7,9 +7,14 @@ function HomeConfig($stateProvider) {
     controller: 'HomeCtrl',
     controllerAs: '$ctrl',
     templateUrl: 'home/home.html',
-    title: 'Home'
+    title: 'Home',
+    resolve: {
+      auth: function(User) {
+        return User.ensureAuthIs(true);
+      }
+    }
   });
 
-};
+}
 
 export default HomeConfig;

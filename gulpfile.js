@@ -16,7 +16,7 @@ var jsFiles   = "src/js/**/*.js";
 var viewFiles = "src/js/**/*.html";
 var sassFiles = "src/sass/**/*.sass";
 
-var interceptErrors = function(error) {
+var interceptErrors = function() {
   var args = Array.prototype.slice.call(arguments);
 
   // Send error to notification center with gulp-notify
@@ -42,6 +42,12 @@ gulp.task('browserify', ['views'], function() {
       .pipe(gulp.dest('./build/'));
 });
 
+gulp.task('sass', function () {
+  return gulp.src('./src/sass/**/*.sass')
+    .pipe(sass.sync().on('error', sass.logError))
+    .pipe(gulp.dest('./build/css'));
+});
+
 gulp.task('html', function() {
   return gulp.src("src/index.html")
       .on('error', interceptErrors)
@@ -60,23 +66,6 @@ gulp.task('views', function() {
 
 // This task is used for building production ready
 // minified JS/CSS files into the dist/ folder
-gulp.task('build', ['html', 'browserify'], function() {
-  var html = gulp.src("build/index.html")
-                 .pipe(gulp.dest('./dist/'));
-
-  var js = gulp.src("build/main.js")
-               .pipe(uglify())
-               .pipe(gulp.dest('./dist/'));
-
-  return merge(html,js);
-});
-
-gulp.task('sass', function () {
-  return gulp.src('./src/sass/**/*.sass')
-    .pipe(sass.sync().on('error', sass.logError))
-    .pipe(gulp.dest('./build/css'));
-});
-
 gulp.task('build', ['html', 'sass', 'browserify'], function() {
   var html = gulp.src("build/index.html")
                  .pipe(gulp.dest('./dist/'));
@@ -91,7 +80,7 @@ gulp.task('build', ['html', 'sass', 'browserify'], function() {
   return merge(html, css, js);
 });
 
-gulp.task('default', ['html', 'browserify'], function() {
+gulp.task('default', ['html', 'sass', 'browserify'], function() {
 
   browserSync.init(['./build/**/**.**'], {
     server: "./build",
@@ -102,8 +91,8 @@ gulp.task('default', ['html', 'browserify'], function() {
     }
   });
 
-  gulp.watch(sassFiles, ['sass']);
   gulp.watch("src/index.html", ['html']);
+  gulp.watch(sassFiles, ['sass']);
   gulp.watch(viewFiles, ['views']);
   gulp.watch(jsFiles, ['browserify']);
 });
